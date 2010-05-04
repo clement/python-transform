@@ -36,7 +36,7 @@ class transform(object):
 
     def process(self, target, context, path):
         if isinstance(target, e):
-            return target.resolve(context, path, self)
+            return target.resolve(context, path, self)[0]
         else:
             iter = None
             if isinstance(target, collections.Mapping):
@@ -85,6 +85,15 @@ class e(object):
             evaluated = transformer.apply(evaluated, expanded_path)
 
         if func:
-            return transformer.execute(func, evaluated)
-        else:
-            return evaluated
+            evaluated = transformer.execute(func, evaluated)
+        return (evaluated, expanded_path)
+
+class s(e):
+    def resolve(self, context, path, transformer):
+        (evaluated, expanded_path) = super(s, self).resolve(context, path, transformer)
+
+        target = []
+        for idx, item in enumerate(evaluated):
+            target.append(transformer.apply(item, '%s[%d]' % (expanded_path, idx)))
+        return (target, expanded_path+'[*]')
+

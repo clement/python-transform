@@ -5,7 +5,7 @@ setup(
     name = 'python-transform',
     py_modules = ['transform'],
     #test_suite = 'test',
-    version = '0.0.1',
+    version = '0.0.2',
     description = 'transform a python datatructure into another using a set of rules.',
     long_description = open('README').read(),
     url = 'http://github.com/clement/python-transform',
